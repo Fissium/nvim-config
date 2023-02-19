@@ -66,17 +66,15 @@ Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
 
 Plug 'numToStr/Comment.nvim'
 
-Plug 'ray-x/lsp_signature.nvim'
-
 call plug#end()
 
 lua require('Comment').setup()
 
-" Format on save
-augroup fmt
-  autocmd!
-  autocmd BufWritePre * undojoin | Neoformat
-augroup END
+" Format on save Neoformat
+"augroup fmt
+  "autocmd!
+  "autocmd BufWritePre * undojoin | Neoformat
+"augroup END
 
 " Neoformat
 let g:neoformat_enabled_python = ['black', 'isort']
@@ -88,6 +86,8 @@ let g:doge_doc_standard_python = 'numpy'
 
 " Leader bind to , 
 let mapleader = ","
+
+nnoremap ,nf :Neoformat<CR>
 
 " Netrw file explorer settings
 let g:netrw_banner = 0 " hide banner above files
@@ -105,24 +105,10 @@ let g:prettier#quickfix_enabled = 0
 let g:sneak#label = 1
 
 colorscheme gruvbox
-"colorscheme OceanicNext
-"let g:material_terminal_italics = 1
-" variants: default, palenight, ocean, lighter, darker, default-community,
-"           palenight-community, ocean-community, lighter-community,
-"           darker-community
-"let g:material_theme_style = 'darker'
+
 let g:gruvbox_contrast_dark = 'medium'
 
 let g:airline_theme= 'gruvbox'
-
-"colorscheme material
-"if (has('termguicolors'))
-  "set termguicolors
-"endif
-
-" variants: mirage, dark, dark
-"let ayucolor="mirage"
-"colorscheme ayu
 
 " turn off search highlight
 nnoremap ,<space> :nohlsearch<CR>
@@ -217,14 +203,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
-  require "lsp_signature".on_attach({
-      bind = true, -- This is mandatory, otherwise border config won't get registered.
-      floating_window = true,
-      floating_window_above_cur_line = true,
-      floating_window_off_x = 20,
-      doc_lines = 10,
-      hint_prefix = '👻 '
-    }, bufnr)  -- Note: add in lsp client on-attach
+  
 end
 
 -- TS setup

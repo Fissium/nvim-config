@@ -52,13 +52,6 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
 
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install --frozen-lockfile --production',
-  \ 'for': [ 'less',  'json',  'markdown',  'yaml' ] }
-
-
-Plug 'bmatcuk/stylelint-lsp'
-
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
@@ -236,16 +229,6 @@ null_ls.setup({
     },
     on_attach = on_attach
 })
-
--- Stylelint format after save
-require'lspconfig'.stylelint_lsp.setup{
-  settings = {
-    stylelintplus = {
-      --autoFixOnSave = true,
-      --autoFixOnFormat = true,
-    }
-  }
-}
 
 
 -- Use a loop to conveniently call 'setup' on multiple servers and

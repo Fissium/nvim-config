@@ -5,6 +5,7 @@ set noswapfile
 set scrolloff=7
 set clipboard+=unnamed,unnamedplus
 
+
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -37,6 +38,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'sbdchd/neoformat'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'lyokha/vim-xkbswitch' "see https://github.com/lyokha/g3kb-switch
 
 " color schemas
 Plug 'morhetz/gruvbox'  " colorscheme gruvbox
@@ -68,6 +70,10 @@ lua require('Comment').setup()
   "autocmd!
   "autocmd BufWritePre * undojoin | Neoformat
 "augroup END
+
+" Enable xkbswitch
+let g:XkbSwitchEnabled = 1
+let g:XkbSwitchLib = '/usr/local/lib/libg3kbswitch.so'
 
 " Neoformat
 let g:neoformat_enabled_python = ['black', 'isort']

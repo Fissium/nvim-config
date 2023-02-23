@@ -42,12 +42,8 @@ Plug 'lyokha/vim-xkbswitch' "see https://github.com/lyokha/g3kb-switch
 
 " color schemas
 Plug 'morhetz/gruvbox'  " colorscheme gruvbox
-Plug 'mhartington/oceanic-next'  " colorscheme OceanicNext
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-Plug 'ayu-theme/ayu-vim'
 
 Plug 'xiyaowong/nvim-transparent'
-
 Plug 'Pocco81/auto-save.nvim'
 Plug 'justinmk/vim-sneak'
 Plug 'nvim-lua/plenary.nvim'
@@ -58,13 +54,9 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
-
-Plug 'numToStr/Comment.nvim'
+Plug 'preservim/nerdcommenter'
 
 call plug#end()
-
-lua require('Comment').setup()
-
 " Format on save Neoformat
 "augroup fmt
   "autocmd!
@@ -84,9 +76,9 @@ let g:python3_host_prog = $CONDA_PREFIX.'/bin/python3'
 let g:doge_doc_standard_python = 'numpy'
 
 " Leader bind to , 
-let mapleader = ","
+let mapleader = ";"
 
-nnoremap ,nf :Neoformat<CR>
+nnoremap <Leader>nf :Neoformat<CR>
 
 " Netrw file explorer settings
 let g:netrw_banner = 0 " hide banner above files
@@ -110,7 +102,7 @@ let g:gruvbox_contrast_dark = 'medium'
 let g:airline_theme= 'gruvbox'
 
 " turn off search highlight
-nnoremap ,<space> :nohlsearch<CR>
+nnoremap <Leader><space> :nohlsearch<CR>
 
 
 lua << EOF

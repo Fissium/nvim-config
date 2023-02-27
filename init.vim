@@ -36,12 +36,10 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'Raimondi/delimitMate'
 Plug 'sbdchd/neoformat'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'lyokha/vim-xkbswitch' "see https://github.com/lyokha/g3kb-switch
 
 " color schemas
-Plug 'sainnhe/gruvbox-material' 
+Plug 'ellisonleao/gruvbox.nvim' 
 
 Plug 'xiyaowong/nvim-transparent'
 Plug 'Pocco81/auto-save.nvim'
@@ -88,33 +86,35 @@ let g:netrw_banner = 0 " hide banner above files
 let g:netrw_liststyle = 3 " tree instead of plain view
 let g:netrw_browse_split = 3 " vertical split window when Enter pressed on file
 
-" Automatically format frontend files with prettier after file save
-let g:prettier#autoformat = 1
-let g:prettier#autoformat_require_pragma = 0
-
-" Disable quickfix window for prettier
-let g:prettier#quickfix_enabled = 0
-
 " Turn on vim-sneak
 let g:sneak#label = 1
 
-" Important!!
+" Colorcheme setting
 if has('termguicolors')
   set termguicolors
 endif
 
-set background=dark
+lua << EOF
+require("gruvbox").setup({
+  undercurl = true,
+  underline = true,
+  bold = true,
+  italic = false,
+  strikethrough = true,
+  invert_selection = false,
+  invert_signs = false,
+  invert_tabline = false,
+  invert_intend_guides = false,
+  inverse = true, -- invert background for search, diffs, statuslines and errors
+  contrast = "", -- can be "hard", "soft" or empty string
+  palette_overrides = {},
+  overrides = {},
+  dim_inactive = false,
+  transparent_mode = true,
+})
+EOF
 
-let g:gruvbox_material_foreground = 'mix'
-
-let g:gruvbox_material_better_performance = 1
-
-let g:gruvbox_material_enable_bold = 1
-
-colorscheme gruvbox-material
-
-
-let g:airline_theme = 'gruvbox_material'
+colorscheme gruvbox
 
 " turn off search highlight
 nnoremap <Leader><space> :nohlsearch<CR>
@@ -374,7 +374,7 @@ lua << END
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'gruvbox-material',
+    theme = 'gruvbox',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {

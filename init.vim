@@ -41,7 +41,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'lyokha/vim-xkbswitch' "see https://github.com/lyokha/g3kb-switch
 
 " color schemas
-Plug 'morhetz/gruvbox'  " colorscheme gruvbox
+Plug 'sainnhe/gruvbox-material' 
 
 Plug 'xiyaowong/nvim-transparent'
 Plug 'Pocco81/auto-save.nvim'
@@ -55,6 +55,9 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
 Plug 'preservim/nerdcommenter'
+
+" Syntax highlighting
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 call plug#end()
 " Format on save Neoformat
@@ -95,15 +98,26 @@ let g:prettier#quickfix_enabled = 0
 " Turn on vim-sneak
 let g:sneak#label = 1
 
-colorscheme gruvbox
+" Important!!
+if has('termguicolors')
+  set termguicolors
+endif
 
-let g:gruvbox_contrast_dark = 'medium'
+set background=dark
 
-let g:airline_theme= 'gruvbox'
+let g:gruvbox_material_foreground = 'mix'
+
+let g:gruvbox_material_better_performance = 1
+
+let g:gruvbox_material_enable_bold = 1
+
+colorscheme gruvbox-material
+
+
+let g:airline_theme = 'gruvbox_material'
 
 " turn off search highlight
 nnoremap <Leader><space> :nohlsearch<CR>
-
 
 lua << EOF
 -- Set completeopt to have a better completion experience
@@ -355,13 +369,12 @@ lua << EOF
 require('telescope').load_extension('fzf')
 EOF
 
-
 " Status line
 lua << END
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'gruvbox',
+    theme = 'gruvbox-material',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {
@@ -400,11 +413,22 @@ require('lualine').setup {
 }
 END
 
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the four listed parsers should always be installed)
+  ensure_installed = { "python", "lua", "vim" },
 
-" White colors for LSP messages in code
-set termguicolors
-hi DiagnosticError guifg=White
-hi DiagnosticWarn  guifg=White
-hi DiagnosticInfo  guifg=White
-hi DiagnosticHint  guifg=White
+  highlight = {
+    enable = true,
+    disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
 
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF

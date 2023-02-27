@@ -1,4 +1,4 @@
-# Nvim as Python language IDE!
+# Neovim as Python language IDE!
 
 For Linux users run:
 

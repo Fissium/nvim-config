@@ -21,8 +21,6 @@ set expandtab
 set shiftwidth=2
 set colorcolumn=87
 
-inoremap jk <esc>
-
 call plug#begin('~/.vim/plugged')
 
 Plug 'neovim/nvim-lspconfig'
@@ -36,7 +34,6 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'Raimondi/delimitMate'
 Plug 'sbdchd/neoformat'
-Plug 'lyokha/vim-xkbswitch' "see https://github.com/lyokha/g3kb-switch
 
 " color schemas
 Plug 'ellisonleao/gruvbox.nvim' 
@@ -63,10 +60,6 @@ call plug#end()
   "autocmd!
   "autocmd BufWritePre * undojoin | Neoformat
 "augroup END
-
-" Enable xkbswitch
-let g:XkbSwitchEnabled = 1
-let g:XkbSwitchLib = '/usr/local/lib/libg3kbswitch.so'
 
 " Neoformat
 let g:neoformat_enabled_python = ['black', 'isort']

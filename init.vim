@@ -54,6 +54,9 @@ Plug 'preservim/nerdcommenter'
 " Syntax highlighting
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+" Linter
+Plug 'neomake/neomake'
+
 call plug#end()
 " Format on save Neoformat
 "augroup fmt
@@ -63,6 +66,24 @@ call plug#end()
 
 " Neoformat
 let g:neoformat_enabled_python = ['black', 'isort']
+
+" Neomake
+let g:neomake_python_pylint_maker = {
+  \ 'args': [
+  \ '-d', 'C0103, C0111, E0102, W0613',
+  \ '-f', 'text',
+  \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
+  \ '-r', 'n'
+  \ ],
+  \ 'errorformat':
+  \ '%A%f:%l:%c:%t: %m,' .
+  \ '%A%f:%l: %m,' .
+  \ '%A%f:(%l): %m,' .
+  \ '%-Z%p^%.%#,' .
+  \ '%-G%.%#',
+  \ }
+let g:neomake_python_enabled_makers = ['pylint']
+call neomake#configure#automake('nrwi', 500)
 
 " Conda env
 let g:python3_host_prog = $CONDA_PREFIX.'/bin/python3'

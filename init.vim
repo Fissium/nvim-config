@@ -43,7 +43,6 @@ Plug 'Pocco81/auto-save.nvim'
 Plug 'justinmk/vim-sneak'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
-Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
 
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
@@ -53,9 +52,6 @@ Plug 'preservim/nerdcommenter'
 
 " Syntax highlighting
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
-" Linter
-Plug 'neomake/neomake'
 
 call plug#end()
 " Format on save Neoformat
@@ -67,27 +63,10 @@ call plug#end()
 " Neoformat
 let g:neoformat_enabled_python = ['black', 'isort']
 
-" Neomake
-let g:neomake_python_pylint_maker = {
-  \ 'args': [
-  \ '-d', 'C0103, C0111, E0102, W0613',
-  \ '-f', 'text',
-  \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
-  \ '-r', 'n'
-  \ ],
-  \ 'errorformat':
-  \ '%A%f:%l:%c:%t: %m,' .
-  \ '%A%f:%l: %m,' .
-  \ '%A%f:(%l): %m,' .
-  \ '%-Z%p^%.%#,' .
-  \ '%-G%.%#',
-  \ }
-let g:neomake_python_enabled_makers = ['pylint']
-call neomake#configure#automake('nrwi', 500)
-
 " Conda env
 let g:python3_host_prog = $CONDA_PREFIX.'/bin/python3'
 
+" vim doge
 let g:doge_doc_standard_python = 'numpy'
 
 " Leader bind to , 
@@ -246,12 +225,12 @@ nvim_lsp.tsserver.setup({
     end,
 })
 
+-- Linter
 local null_ls = require("null-ls")
 null_ls.setup({
     sources = {
-        null_ls.builtins.diagnostics.eslint,
-        null_ls.builtins.code_actions.eslint,
-        null_ls.builtins.formatting.prettier
+      null_ls.builtins.diagnostics.pylint.with({
+      extra_args = {'-d', 'C0103, C0111, E0102, W0613'}}),
     },
     on_attach = on_attach
 })

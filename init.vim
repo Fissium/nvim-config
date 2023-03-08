@@ -42,7 +42,6 @@ Plug 'xiyaowong/nvim-transparent'
 Plug 'Pocco81/auto-save.nvim'
 Plug 'justinmk/vim-sneak'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'jose-elias-alvarez/null-ls.nvim'
 
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
@@ -204,48 +203,28 @@ local on_attach = function(client, bufnr)
   
 end
 
--- TS setup
-local buf_map = function(bufnr, mode, lhs, rhs, opts)
-    vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts or {
-        silent = true,
-    })
-end
-
-nvim_lsp.tsserver.setup({
-    on_attach = function(client, bufnr)
-        client.server_capabilities.document_formatting = false
-        client.server_capabilities.document_range_formatting = false
-        local ts_utils = require("nvim-lsp-ts-utils")
-        ts_utils.setup({})
-        ts_utils.setup_client(client)
-        buf_map(bufnr, "n", "gs", ":TSLspOrganize<CR>")
-        buf_map(bufnr, "n", "gi", ":TSLspRenameFile<CR>")
-        buf_map(bufnr, "n", "go", ":TSLspImportAll<CR>")
-        on_attach(client, bufnr)
-    end,
-})
-
--- Linter
-local null_ls = require("null-ls")
-null_ls.setup({
-    sources = {
-      null_ls.builtins.diagnostics.pylint.with({
-      extra_args = {'-d', 'C0103, C0111, E0102, W0613'}}),
-    },
-    on_attach = on_attach
-})
-
-
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'pyright' }
+local servers = { 'pyright', 'ruff_lsp' }
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
+  if lsp == 'ruff_lsp' then
+    nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    init_options = {
+      settings = {
+       -- Any extra CLI arguments for `ruff` go here.
+       args = { '--select=B', '--select=E', '--select=F' }
+        }
+      }
+    } 
+  else
+    nvim_lsp[lsp].setup {
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
     }
   }
+  end
 end
 EOF
 

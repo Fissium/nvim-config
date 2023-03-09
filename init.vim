@@ -198,10 +198,13 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', opts)
 
   
 end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 } 
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -213,17 +216,15 @@ for _, lsp in ipairs(servers) do
     init_options = {
       settings = {
        -- Any extra CLI arguments for `ruff` go here.
-       args = { '--select=B', '--select=E', '--select=F' }
+       args = { '--select=B', '--select=E', '--select=F', '--select=ARG' } 
         }
       }
     } 
-  else
+  else 
     nvim_lsp[lsp].setup {
+    capabilities = capabilities,
     on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
     }
-  }
   end
 end
 EOF

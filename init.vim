@@ -82,10 +82,6 @@ let g:netrw_browse_split = 3 " vertical split window when Enter pressed on file
 let g:sneak#label = 1
 
 " Colorcheme setting
-if has('termguicolors')
-  set termguicolors
-endif
-
 lua << EOF
 require("gruvbox").setup({
   undercurl = true,
@@ -216,7 +212,9 @@ for _, lsp in ipairs(servers) do
     init_options = {
       settings = {
        -- Any extra CLI arguments for `ruff` go here.
-       args = { '--select=B', '--select=E', '--select=F', '--select=ARG' } 
+       args = { '--select=B', '--select=E', '--select=F', '--select=ARG', 
+       '--select=PTH', 
+       } 
         }
       }
     } 
@@ -224,6 +222,15 @@ for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
     capabilities = capabilities,
     on_attach = on_attach,
+    settings = {
+      python = {
+        analysis = {
+          diagnosticSeverityOverrides = {
+            reportGeneralTypeIssues = 'error'
+            }
+          }
+        }
+      }
     }
   end
 end
